@@ -1,137 +1,66 @@
-# Ex.No:4(D) DESIGN PATTERN -- ABSTRACT FACTORY
+# Ex.No:2(D) VARIABLE SCOPE AND CONSTRUCTOR
 
 ## QUESTION:
-You’re creating a cross-platform UI tool using the Abstract Factory pattern. Implement factories to create Button and Checkbox for "dark" and "light" themes. Let the user choose the theme, then generate UI components and display their types
-
-
-<img width="357" height="123" alt="image" src="https://github.com/user-attachments/assets/ee651ca7-9034-4186-8aa2-296b64d2a5d6" />
-
+Write a program to access a static variable using both class name and object.
+<img width="518" height="133" alt="image" src="https://github.com/user-attachments/assets/c2652869-39ad-4d6e-9f7a-66caa98752da" />
 
 
 ## AIM:
-To implement the Abstract Factory Design Pattern in Java by creating themed UI components using different factories based on user input.
+To write a Java program that demonstrates variable scope by accessing a static variable using both class name and object reference.
+
+
 
 ## ALGORITHM :
-1.Start the program and read the theme input from the user.
+1.Start the program.
 
-2.Based on the theme, create the corresponding factory object (DarkThemeFactory or LightThemeFactory).
+2.Import the necessary package java.util.
 
-3.Use the selected factory to create a Button and a Checkbox object.
+3.Declare a static variable inside the class.
 
-4.Call the render() method on both objects to display their theme-specific outputs.
+4.In the main method, get input from the user and store it in the static variable.
 
-5.End the program.
+5.Access and print the static variable using the class name.
 
+6.Create an object of the class.
 
+7.Access and print the static variable using the object.
+
+8.End the program.
 
 ## PROGRAM:
  ```
-Program to implement a Abstract Factory Pattern using Java
-Developed by: Karthick K
+Program to implement a Variable scope and Constructor using Java
+Developed by:Karthick K
 RegisterNumber: 212222040070
 ```
 
 ## SOURCE CODE:
 ```java
 import java.util.*;
-
-interface Button {
-    void render();
-}
-
-interface Checkbox {
-    void render();
-}
-
-// Concrete Products for Dark Theme
-class DarkButton implements Button {
-    public void render() {
-        System.out.println("Dark Button created");
-    }
-}
-
-class DarkCheckbox implements Checkbox {
-    public void render() {
-        System.out.println("Dark Checkbox created");
-    }
-}
-
-// Concrete Products for Light Theme
-class LightButton implements Button {
-    public void render() {
-        System.out.println("Light Button created");
-    }
-}
-
-class LightCheckbox implements Checkbox {
-    public void render() {
-        System.out.println("Light Checkbox created");
-    }
-}
-
-// Abstract Factory
-interface UIFactory {
-    Button createButton();
-    Checkbox createCheckbox();
-}
-
-// Concrete Factories
-class DarkThemeFactory implements UIFactory {
-    public Button createButton() {
-        return new DarkButton();
-    }
-    public Checkbox createCheckbox() {
-        return new DarkCheckbox();
-    }
-}
-
-class LightThemeFactory implements UIFactory {
-    public Button createButton() {
-        return new LightButton();
-    }
-    public Checkbox createCheckbox() {
-        return new LightCheckbox();
-    }
-}
-
-// Main class
-public class prog {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        String theme = sc.nextLine().trim().toLowerCase();
-
-        UIFactory factory = null;
-
-        if (theme.equals("dark")) {
-            factory = new DarkThemeFactory();
-        } else if (theme.equals("light")) {
-            factory = new LightThemeFactory();
-        } else {
-            System.out.println("Invalid theme");
-            sc.close();
-            return;
-        }
-
-        Button button = factory.createButton();
-        Checkbox checkbox = factory.createCheckbox();
-
-        button.render();
-        checkbox.render();
-
-        sc.close();
+public class prog
+{ 
+    static int val;
+    public static void main(String[] args)
+    {
+        Scanner input=new Scanner(System.in);
+        prog.val=input.nextInt();
+        System.out.println("Accessing using class name: "+prog.val);
+        prog obj=new prog();
+        System.out.println("Accessing using object: "+obj.val);
     }
 }
 ```
 
 
 
+
 ## OUTPUT:
-<img width="1305" height="426" alt="image" src="https://github.com/user-attachments/assets/6d667a53-9338-49e0-8c27-fc049974b791" />
+<img width="1291" height="446" alt="image" src="https://github.com/user-attachments/assets/bd2d1ee0-6b4f-40c8-8118-a87ef5529822" />
 
 
 
 ## RESULT:
-The program successfully implemented the Abstract Factory design pattern in Java, creating UI components based on selected theme using appropriate factory classes.
+The program to demonstrate variable scope and access a static variable using both class name and object was successfully executed.
 
 
 
