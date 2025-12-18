@@ -1,63 +1,131 @@
-# Ex.No:5(A) INPUTSTREAMREADER 
+# Ex.No:5(B) SERIALIZATION AND DESERIALIZATION 
 
 ## QUESTION:
-Write a program to demonstrate chaining of streams (BufferedReader on top of InputStreamReader on top of System.in)
-<img width="296" height="175" alt="image" src="https://github.com/user-attachments/assets/55523e5e-80b1-4fdd-9556-350840f0033c" />
+Write a Java program to serialize a collection of objects (like ArrayList<Student>) into a file.
+<img width="690" height="260" alt="image" src="https://github.com/user-attachments/assets/009cda3f-7124-4cfe-af33-bb8be9b4e19a" />
 
 ## AIM:
-To write a Java program that demonstrates stream chaining by connecting System.in → InputStreamReader → BufferedReader to read user input and display the entered details.
+To write a Java program that demonstrates object serialization and deserialization, where multiple Student objects entered by the user are stored in a file and later retrieved and displayed.
 
 ## ALGORITHM :
-1. Start the program.
+1. Start the program and import required I/O and utility packages.
 
-2. Import the necessary I/O packages (java.io.*).
+2. Create a Student class that implements Serializable.
 
-3. Create a BufferedReader object by chaining System.in → InputStreamReader → BufferedReader.
+3. Read the number of students and their details from the user and store them in a list.
 
-4. Read the user's name using the readLine() method.
+4. Open an ObjectOutputStream and write the list of Student objects to a file.
 
-5. Read the user's age using the readLine() method.
+5. Open an ObjectInputStream and read back the list of Student objects from the file.
 
-6. Display the collected user details (name and age).
+6. Display the deserialized student details on the screen.
 
-7. Handle any IOException that may occur during input operations.
+7. Handle all I/O exceptions that occur during serialization and deserialization.
 
 ## PROGRAM:
  ```
-Program to implement a InputStreamReader using Java
-Developed by: Karthick K
-RegisterNumber:212222040070 
+Program to implement a Serialization and Deserialization using Java
+Developed by:Karthick K 
+RegisterNumber: 212222040070
 ```
 
 ## SOURCE CODE:
 ```
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.*;
 
-public class ChainingStreamsExample {
-    public static void main(String[] args) {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+// Student class must implement Serializable
+class Student implements Serializable {
+    private static final long serialVersionUID = 1L;
 
-        try {
-            String name = br.readLine();
-            String age = br.readLine();
+    private int id;
+    private String name;
+    private double marks;
 
-            System.out.println("--- User Details ---");
-            System.out.println("Name: " + name);
-            System.out.println("Age: " + age);
+    public Student(int id, String name, double marks) {
+        this.id = id;
+        this.name = name;
+        this.marks = marks;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{id=" + id + ", name='" + name + "', marks=" + marks + "}";
+    }
+}
+
+public class StudentSerializationUserInput {
+
+    // Serialize list of students
+    public static void serializeStudents(List<Student> students, String fileName) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
+            oos.writeObject(students);
+            System.out.println("Students serialized successfully into: " + fileName);
         } catch (IOException e) {
-            System.out.println("Error reading input");
+            System.out.println("Error during serialization: " + e.getMessage());
         }
+    }
+
+    // Deserialize list of students
+    @SuppressWarnings("unchecked")
+    public static List<Student> deserializeStudents(String fileName) {
+        List<Student> students = null;
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName))) {
+            students = (List<Student>) ois.readObject();
+            System.out.println("Students deserialized successfully from: " + fileName);
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Error during deserialization: " + e.getMessage());
+        }
+        return students;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        List<Student> students = new ArrayList<>();
+
+        int n = scanner.nextInt();
+        scanner.nextLine(); // consume newline
+
+        // Read student details
+        for (int i = 0; i < n; i++) {
+            int id = scanner.nextInt();
+            scanner.nextLine();
+            String name = scanner.nextLine();
+            double marks = scanner.nextDouble();
+            scanner.nextLine();
+            students.add(new Student(id, name, marks));
+        }
+
+        String fileName = "students.dat";
+
+        // Serialize
+        serializeStudents(students, fileName);
+
+        // Deserialize
+        List<Student> deserializedStudents = deserializeStudents(fileName);
+
+        // Display deserialized data
+        if (deserializedStudents != null) {
+            System.out.println("\nDeserialized Students:");
+            for (Student s : deserializedStudents) {
+                System.out.println(s);
+            }
+        }
+
+        scanner.close();
     }
 }
 ```
 
-## OUTPUT:
-<img width="631" height="496" alt="image" src="https://github.com/user-attachments/assets/eab75048-8fc2-4f89-885e-bf2ccf76e182" />
 
+
+
+
+## OUTPUT:
+
+<img width="1242" height="449" alt="image" src="https://github.com/user-attachments/assets/3b1213d3-934c-4356-9b52-f1f29494a618" />
 
 
 ## RESULT:
-The program successfully demonstrates chaining of input streams using BufferedReader and InputStreamReader. It reads the user's name and age from the console and displays them without errors.
+The program successfully serializes a list of Student objects into a file named students.dat and then deserializes the data back into a list. It correctly displays all the retrieved student information, proving that object serialization and deserialization work as expected.
 
